@@ -1,0 +1,8 @@
+.cproject
+.project
+.qnx_internal.mk
+common.mk
+Makefile
+
+arm/
+x86/
