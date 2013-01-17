@@ -18,7 +18,6 @@ unsigned int get_count_loops(void);
 bool waste_time(unsigned int msec);
 bool init_waste_time(void);
 
-void check_waste_time();
 
 __END_DECLS
 

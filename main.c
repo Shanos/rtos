@@ -17,13 +17,12 @@ int main(int argc, char *argv[]) {
 	int i=0, ret = 0;
 	raum.raumbelegung=0;
 
-
 	/* Setup signals */
 	signal(SIGINT, signals_handler);
 	signal(SIGHUP, signals_handler);
 	signal(SIGTERM, signals_handler);
 	
-	check_waste_time();
+	init_waste_time();
 
 	/*initialisierung Mutex & Condition*/
 	ret = pthread_mutex_init(&raum.raum_lock, NULL);
