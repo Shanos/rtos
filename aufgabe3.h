@@ -10,7 +10,6 @@
 
 __BEGIN_DECLS
 
-
 void stop_looping_aufgabe3(void);
 
 bool set_count_loops(unsigned int a_count_loops);

@@ -7,10 +7,6 @@
 
 #include "headers.h"
 
-#define PRECISION_WASTE_TIME 			1000 		// 1 us
-#define INIT_WASTE_TIME_LOWER_BOUND		0
-#define INIT_WASTE_TIME_UPPER_BOUND		500000
-
 
 static bool on_looping_flag = true;
 static volatile unsigned int count_loops = 0;
@@ -80,7 +76,6 @@ bool init_waste_time() {
 		fprintf(stderr, "error: Check waste time - clock (start).\n");
 		print_error_code(start);
 	}
-
 
 	waste_time(maximum_waste_time);
 

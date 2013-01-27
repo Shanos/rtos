@@ -18,7 +18,7 @@ int main(int argc, char *argv[]) {
 	raum.raumbelegung=0;
 
 	/* Setup signals */
-	signal(SIGINT, signals_handler);
+	signal(SIGIStartNT, signals_handler);
 	signal(SIGHUP, signals_handler);
 	signal(SIGTERM, signals_handler);
 	
