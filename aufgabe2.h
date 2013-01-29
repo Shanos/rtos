@@ -22,9 +22,39 @@ typedef struct _Raum
 
 }raum_t;
 
-unsigned int get_random(unsigned int bounce);
+/**
+ * @brief Stop infinity loop within threads
+ *
+ * Function will be called through signal handler
+ */
 void stop_looping_aufgabe2(void);
+
+/**
+ * @brief Get random number for rein_raus
+ * @param bounce Upper bounce fpr random number
+ * @retval WAIT_MINIMUM On failure
+ * @retval Random On success
+ *
+ * Function calculate the next random number for rein_raus with a upper bounce.
+ * On failure a fix value of WAIT_MINIMUM will be returned.
+ */
+unsigned int get_random(unsigned int bounce);
+
+/**
+ * @brief Get random number for rein_raus
+ * @param raum Structure raum
+ *
+ * Function prints the raumbelegung. Can be stopped by signal handler
+ */
 void ausgabe_raumbelegung(void *raum);
+
+/**
+ * @brief Simulate people
+ * @param raum Structure raum
+ *
+ * Function simulate people which going in and out of a room.
+ * Can be stopped by signal handler
+ */
 void rein_raus(void *raum);
 
 

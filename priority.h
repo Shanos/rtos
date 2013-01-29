@@ -44,8 +44,43 @@ struct _scheduler {
 	int min_priority;
 };
 
+/**
+ * @brief Request priority of the thread
+ * @param id ID of the thread
+ * @param scheduler Storage location
+ * @retval false no Storage location is given
+ * @retval true On success
+ *
+ * Function request the priorities (Policy, Priority, PriorityMin, PriorityMax)
+ * of the given thread.
+ * It will be saved into scheduler structure
+ */
 bool get_priority(pthread_t id, struct _scheduler *scheduler);
+
+/**
+ * @brief Print priority of the thread
+ * @param id ID of the thread
+ * @param scheduler Print scheduler structure
+ * @retval false Could not call get_priority
+ * @retval true On success
+ *
+ * Function prints the priorities (Policy, Priority, PriorityMin, PriorityMax)
+ * If no scheduler structure is given, function call get_priority and store it
+ * in the scheduler
+ */
 bool print_priority(pthread_t id, struct _scheduler *scheduler);
+
+/**
+ * @brief Set priority of the thread
+ * @param id ID of the thread
+ * @param policy New policy of the thread
+ * @param priority New priority of the thread
+ * @retval false Priority could not set
+ * @retval true On success
+ *
+ * Function set the policy and priority
+ * of the given thread.
+ */
 bool set_priority(pthread_t id, int policy, int priority);
 
 

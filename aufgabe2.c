@@ -17,16 +17,13 @@ unsigned int get_random(unsigned int bounce) {
 	static unsigned int random = 0;
 
 	if(!random) {
-		do {
 
-			random = time(NULL);
-			if(random == -1) {
+		random = time(NULL);
+		if(random == -1) {
 
-				fprintf(stderr, "error: Random number failure, calendar time is not available.\n");
-				return WAIT_MINIMUM;
-			}
-
-		}while(errno == EINTR);
+			fprintf(stderr, "error: Random number failure, calendar time is not available.\n");
+			return WAIT_MINIMUM;
+		}
 	}
 
 	random = random * 1103515245 + 12345;

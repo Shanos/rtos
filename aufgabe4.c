@@ -139,12 +139,15 @@ void wait_taktgeber(void *unused) {
 
 	while(on_looping_flag) {
 
-		ret = sem_wait(&takt_sem);
-		if(ret == -1) {
+		do {
+			ret = sem_wait(&takt_sem);
+			if(ret == -1) {
 
-			fprintf(stderr, "error: Semaphore wait takt_sem.\n");
-			print_error_code(errno);
-		}
+				fprintf(stderr, "error: Semaphore wait takt_sem.\n");
+				print_error_code(errno);
+			}
+		}while(errno == EINTR);
+
 		dbg_h("Debug: Takt semaphore arrived.\n");
 		waste_time(WAIT_TAKTGEBER_WASTE_TIME);
 		i++;
@@ -198,12 +201,15 @@ void wait_thread1(void *unused) {
 
 	while(on_looping_flag) {
 
-		ret = sem_wait(&wait_thread1_sem);
-		if(ret == -1) {
+		do {
+			ret = sem_wait(&wait_thread1_sem);
+			if(ret == -1) {
 
-			fprintf(stderr, "error: Semaphore wait wait_thread1_sem.\n");
-			print_error_code(errno);
-		}
+				fprintf(stderr, "error: Semaphore wait wait_thread1_sem.\n");
+				print_error_code(errno);
+			}
+		}while(errno == EINTR);
+
 		dbg_h("Debug: wait_thread1 active.\n");
 		waste_time(WAIT_THREAD1_WASTE_TIME);
 	}

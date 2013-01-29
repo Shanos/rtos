@@ -19,9 +19,23 @@ void stop_looping_aufgabe3() {
 
 bool set_count_loops(unsigned int a_count_loops){
 
-	pthread_mutex_lock(&count_loops_lock);
+	int ret = 0;
+
+	ret = pthread_mutex_lock(&count_loops_lock);
+	if(ret) {
+
+		fprintf(stderr, "error: set_count_loops - pthread_mutex_lock.\n");
+		print_error_code(ret);
+		return false;
+	}
 	count_loops = a_count_loops;
-	pthread_mutex_unlock(&count_loops_lock);
+	ret = pthread_mutex_unlock(&count_loops_lock);
+	if(ret) {
+
+		fprintf(stderr, "error: set_count_loops - pthread_mutex_unlock.\n");
+		print_error_code(ret);
+		return false;
+	}
 	dbg_h("Debug: Set loop counter %u.\n", count_loops);
 
 	return true;
@@ -29,13 +43,26 @@ bool set_count_loops(unsigned int a_count_loops){
 
 unsigned int get_count_loops(){
 
-	unsigned int ret = 0;
-	pthread_mutex_lock(&count_loops_lock);
-	ret = count_loops;
-	pthread_mutex_unlock(&count_loops_lock);
+	unsigned int ret = 0, counter = 0;
+
+	ret = pthread_mutex_lock(&count_loops_lock);
+	if(ret) {
+
+		fprintf(stderr, "error: get_count_loops - pthread_mutex_lock.\n");
+		print_error_code(ret);
+		return 0;
+	}
+	counter = count_loops;
+	ret = pthread_mutex_unlock(&count_loops_lock);
+	if(ret) {
+
+		fprintf(stderr, "error: get_count_loops - pthread_mutex_unlock.\n");
+		print_error_code(ret);
+		return 0;
+	}
 	dbg_h("Debug: Get loop counter %u.\n", ret);
 
-	return ret;
+	return counter;
 }
 
 
@@ -43,7 +70,7 @@ bool waste_time(unsigned int msec) {
 
 	unsigned int i, j, counter = get_count_loops();
 
-	for(i=0; i<msec; i++) {
+	for(i=0; ((i<msec) && (i<=100)); i++) {
 
 		for(j=0; j<counter; j++) {
 
@@ -53,6 +80,12 @@ bool waste_time(unsigned int msec) {
 
 		if(!on_looping_flag)
 			break;
+	}
+
+	if(i==100) {
+
+		fprintf(stderr, "error: Waste time - exceed time limit.\n");
+		return false;
 	}
 	return true;
 }
@@ -68,24 +101,25 @@ bool init_waste_time() {
 	get_priority(pthread_self(), &scheduler);
 	set_priority(pthread_self(), INIT_WASTE_TIME_SCHEDULER, INIT_WASTE_TIME_SCHEDULER_PRIOR);
 	set_count_loops(100000000);
-	do {
-		start = clock();
-	}while(errno == EINTR);
+
+	start = clock();
+
 	if(start == -1) {
 
 		fprintf(stderr, "error: Check waste time - clock (start).\n");
 		print_error_code(start);
+		return false;
 	}
 
 	waste_time(maximum_waste_time);
 
-	do {
-		end = clock();
-	}while(errno == EINTR);
+	end = clock();
+
 	if(end == -1) {
 
 		fprintf(stderr, "error: Check waste time - clock (end).\n");
 		print_error_code(end);
+		return false;
 	}
 
 	set_count_loops((unsigned int)(((maximum_waste_time*(double)get_count_loops())/(end - start))*1000));

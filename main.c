@@ -4,6 +4,7 @@
 static void signals_handler() {
 
 	printf("Program will be stopped.\n");
+
 	stop_looping_aufgabe2();
 	stop_looping_aufgabe3();
 	stop_looping_aufgabe4();
@@ -18,7 +19,7 @@ int main(int argc, char *argv[]) {
 	raum.raumbelegung=0;
 
 	/* Setup signals */
-	signal(SIGIStartNT, signals_handler);
+	signal(SIGINT, signals_handler);
 	signal(SIGHUP, signals_handler);
 	signal(SIGTERM, signals_handler);
 	
